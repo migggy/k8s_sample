@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs001
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  # PersistentVolumeClaim を削除した時の動作
+  persistentVolumeReclaimPolicy:
+  storageClassName: slow
+  mountOptions:
+    - hard
+  ## マウント先のNFS Serverの情報を記載
+  nfs:
+    path:<path>
+    server: 192.168.99.1
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-claim1
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: slow
