@@ -1,0 +1,104 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: hello-world-
+spec:
+  entrypoint: whalesay
+  templates:
+  - name: whalesay
+    container:
+      env:
+      - name: WORKFLOW_CREATION_DATE
+        value: "{{workflow.creationTimestamp}}"
+      image: aliceproj/boto3:latest
+      command: [python, -c]
+      args:
+        - |-
+          import os
+          import sys
+          import pathlib
+          from datetime import datetime, timedelta, timezone
+          import textwrap
+          from pathlib import Path
+          import logging
+
+          from boto3.session import Session
+          import boto3
+          from botocore.client import Config
+
+
+          def get_logger(name):
+              logging.basicConfig(
+                  level=logging.INFO,
+                  format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+              )
+              return logging.getLogger(name)
+
+
+          logger = get_logger(__name__)
+
+
+          def format_timestamp(timestamp_utc: str, tz: str) -> datetime.strptime:
+              """ Argo workflow creation date convert to jst
+
+              Arguments:
+              timestamp_utc: str
+                  workflow_creation_date.{{workflow.creationTimestamp}}
+              tz: str
+                  using time zone
+              """
+              datetime_utc = datetime.strptime(
+                  timestamp_utc, "%Y-%m-%d %H:%M:%S +0000 UTC")
+              if tz == 'JST':
+                  return datetime_utc.astimezone(timezone(timedelta(hours=+9)))
+              else:
+                  return datetime_utc
+
+
+          def set_target_date_to_key_name(key_name: str, target_date: str, workflow_creation_date: str, tz='JST') -> str:
+              """ To embed date in key name.
+              The date can be set based on workflow creation time.
+
+              Arguments:
+              key_name: str
+                  S3 key name.
+              target_date: str
+                  Target date in key name
+              workflow_creation_date: str
+                  Argo workflow creation date.
+                  "{{workflow.creationTimestamp}}"
+              tz: str
+                  using time zone
+
+              Examples:
+              >>> set_target_date_to_key_name('key/{Y}/{M}/{D}/', 'yesterday', '2019/04/01')
+              key/2019/03/31
+
+              >>> set_target_date_to_key_name('key/{Y}/{M}/{D}/'. '2019/03/01', '2019/04/01')
+              key/2019/03/01
+              """
+              workflow_creation_date = format_timestamp(workflow_creation_date, tz)
+
+              if not target_date:
+                  return key_name
+              elif target_date == 'today':
+                  target_date = workflow_creation_date
+              elif target_date == 'yesterday':
+                  target_date = workflow_creation_date - timedelta(days=1)
+              elif target_date == 'tomorrow':
+                  target_date = workflow_creation_date + timedelta(days=1)
+              elif 'days ago' in target_date:
+                  target_date = workflow_creation_date - \
+                      timedelta(days=int(target_date.split()[0]))
+              else:
+                  target_date = datetime.strptime(target_date, '%Y/%m/%d')
+
+              return key_name.format(
+                  Y=target_date.strftime('%Y'),
+                  M=target_date.strftime('%m'),
+                  D=target_date.strftime('%d')
+              )
+
+          key_name = set_target_date_to_key_name('key/{Y}/{M}/{D}/', 'today', '2019-07-26 15:20:00 +0000 UTC')
+          print(key_name)
+

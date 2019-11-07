@@ -1,0 +1,19 @@
+alertmanager:
+  ingress:
+    enabled: true
+    hosts:
+      - alertmanager.minikube
+  persistentVolume:
+    size: 1Gi
+    storageClass: "standard"
+server:
+  ingress:
+    enabled: true
+    hosts:
+      - prometheus.minikube
+  persistentVolume:
+    size: 1Gi
+    storageClass: "standard"
+  retention: "12h"
+pushgateway:
+  enabled: false

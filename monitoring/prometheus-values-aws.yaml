@@ -1,0 +1,8 @@
+alertmanager:
+  persistentVolume:
+    enabled: false
+server:
+  persistentVolume:
+    enabled: false
+  emptyDir:
+    sizeLimit: "2Gi"

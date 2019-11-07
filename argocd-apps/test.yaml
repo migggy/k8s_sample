@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: test
+spec:
+  destination:
+    namespace: batch
+    server: "https://kubernetes.default.svc"
+  source:
+    path: mlops/charts/batch
+    repoURL: >-
+      https://f3816b60e334a431fc55ecec19ebd9ed654c3c91:@github.com/bizreach/ai-apollo.git
+    targetRevision: ct-prd-deploy
+    helm:
+      valueFiles:
+        - values.yaml
+  project: default
