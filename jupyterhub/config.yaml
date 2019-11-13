@@ -37,8 +37,7 @@ singleuser:
       kubespawner_override:
         image: jupyter/datascience-notebook:2343e33dec46
         memory:
-          mem_limit: 1.5G
-          mem_guarantee: 1.5G
+          mem_limit: "1G"
     - display_name: "Spark environment"
       description: "The Jupyter Stacks spark image!"
       kubespawner_override:
