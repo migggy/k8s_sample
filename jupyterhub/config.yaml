@@ -23,22 +23,22 @@ auth:
 singleuser:
   # Defines the default image
   image:
-    name: jupyter/minimal-notebook
+    name: jupyter/datascience-notebook
     tag: 2343e33dec46
   memory:
-    limit: 0.5G
-    guarantee: 0.5G
+    limit: 1G
+    guarantee: 1G
   profileList:
-    - display_name: "Minimal environment"
-      description: "To avoid too much bells and whistles: Python."
+    - display_name: "S environment"
+      description: "Memoy size is 1G"
       default: true
-    - display_name: "Datascience environment"
-      description: "If you want the additional bells and whistles: Python, R, and Julia."
+    - display_name: "M environment"
+      description: "Memoy size is 2G"
       kubespawner_override:
-        image: jupyter/datascience-notebook:2343e33dec46
-        mem_limit: "1G"
-        mem_guarantee: "1G"
-    - display_name: "Spark environment"
-      description: "The Jupyter Stacks spark image!"
+        mem_limit: "2G"
+        mem_guarantee: "2G"
+    - display_name: "L environment"
+      description: "Memoy size is 4G"
       kubespawner_override:
-        image: jupyter/all-spark-notebook:2343e33dec46
+        mem_limit: "4G"
+        mem_guarantee: "4G"
