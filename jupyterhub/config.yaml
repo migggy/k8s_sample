@@ -8,17 +8,18 @@ hub:
     jupyterlab: |
       c.Spawner.cmd = ['jupyter-labhub']
 
-prePuller:
-  hook:
-    enabled: true
-
-cull:
-  enabled: false
-
 auth:
+  type: dummy
+  dummy:
+    # TODO user secret
+    password: "mypassword"
   admin:
     users:
       - admin
+  whitelist:
+    users:
+      - user1
+      - user2
 
 singleuser:
   # Defines the default image
