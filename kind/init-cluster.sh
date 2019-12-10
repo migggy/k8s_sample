@@ -12,3 +12,4 @@ kubectl cluster-info --context kind-kind
 
 # install cluster component
 helm repo update
+helm install stable/metrics-server --name-template metrics-server --namespace kube-system
