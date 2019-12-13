@@ -1,10 +1,4 @@
 #!/bin/bash
-# - Requermentes
-#   - helm(v3.0 >)
-#   - kind(v0.6.1 >)
-#   - go(v1.13 >)
-# - Add helm repo.
-#   - helm repo add stable https://kubernetes-charts.storage.googleapis.com/
 
 cd `dirname $0`
 
