@@ -15,4 +15,5 @@ sh tmp.sh --version ${HELM_VERSION}
 rm tmp.sh
 
 # helm3
+# brew install helm
 # helm repo add stable https://kubernetes-charts.storage.googleapis.com/
