@@ -11,8 +11,9 @@ kubectl apply -f https://gist.githubusercontent.com/hjacobs/69b6844ba8442fcbc200
 # setup helm2
 # TODO support helm3
 helm repo update
+helm init --tiller-tls-verify
 kubectl create serviceaccount -n kube-system tiller
 kubectl create clusterrolebinding tiller-cluster-admin --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
 kubectl --namespace kube-system patch deploy tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'
-h
+
 # install cluster component by helm
