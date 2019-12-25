@@ -4,6 +4,7 @@ master:
   jenkinsUriPrefix: "/jenkins"
   installPlugins:
     - kubernetes:1.21.2
+    - kubernetes-cli:1.7.0
     - workflow-job:2.36
     - workflow-aggregator:2.6
     - credentials-binding:1.20
