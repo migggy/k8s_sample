@@ -1,5 +1,5 @@
 #!/bin/bash
 
-helm install stable/jenkins --name jenkins -f jenkins.yaml
-# add role to Agent
-kubectl create clusterrolebinding jenkins --clusterrole cluster-admin --serviceaccount=default:default
+kubectl create namespace jenkins
+helm install stable/jenkins --name jenkins --namespace jenkins -f jenkins.yaml
+kubectl create clusterrolebinding jenkins --clusterrole cluster-admin --serviceaccount=jenkins:default
