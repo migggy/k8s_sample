@@ -9,11 +9,9 @@ kubectl apply -f https://gist.githubusercontent.com/hjacobs/69b6844ba8442fcbc200
 
 # setup helm
 helm repo update
-if [ "$(helm version --short | awk -F '.' '{print $1}')" == "v2" ] ; then
-  kubectl create serviceaccount -n kube-system tiller
-  kubectl create clusterrolebinding tiller-cluster-admin --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
-  helm init --override spec.template.spec.serviceAccount="tiller"
-  until [ "$(kubectl get pods -n kube-system | grep tiller | awk '{print $2}')" = "1/1" ]; do
-    sleep 1
-  done
-fi
+kubectl create serviceaccount -n kube-system tiller
+kubectl create clusterrolebinding tiller-cluster-admin --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+helm init --override spec.template.spec.serviceAccount="tiller"
+until [ "$(kubectl get pods -n kube-system | grep tiller | awk '{print $2}')" = "1/1" ]; do
+  sleep 1
+done
