@@ -1,12 +1,12 @@
 #!/bin/bash
 
-cd `dirname $0`
+set -Ceu
+cd "$(dirname "$0")"
 
 # homebrew
 brew install go \
              kind \
              derailed/k9s/k9s
-             # helm3
 
 # helm2
 HELM_VERSION="v2.14.1"
