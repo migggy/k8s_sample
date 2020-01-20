@@ -2,6 +2,10 @@ master:
   imagePullPolicy: IfNotPresent
   adminPassword: password
   jenkinsUriPrefix: "/jenkins"
+  csrf:
+    defaultCrumbIssuer:
+      enabled: false
+      proxyCompatability: false
   installPlugins:
     - kubernetes:1.21.2
     - workflow-job:2.36
